@@ -193,7 +193,7 @@ mvn clean install
 Run the following command to build the container image in the cluster using S2I build strategy:
 [source, shell]
 ----
-mvn -f ocp-demo-frontend/pom.xml oc:build
+mvn oc:build
 ----
 
 ==== 3) Check container image exists in the local OpenShift registry
@@ -209,7 +209,7 @@ ocp-demo-frontend   image-registry.openshift-image-registry.svc:5000/sbishyr-haz
 To start the application, use the following command:
 [source, shell]
 ----
-mvn -f ocp-demo-frontend/pom.xml oc:resource oc:apply
+mvn oc:resource oc:apply
 ----
 
 You can check that the application is running correctly:
