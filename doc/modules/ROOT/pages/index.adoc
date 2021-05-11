@@ -170,7 +170,7 @@ NAME                        HOST/PORT                                           
 management-center-service   management-center-service-hazelcast.192.168.99.100.nip.io          management-center-service   8080                 None
 ----
 
-Then, you can access Management Center by opening `management-center-service-hazelcast.192.168.99.100.nip.io/hazelcast-mancenter` (`/mancenter` for versions prior to `3.10`) in your browser.
+Then, you can access Management Center by opening `http://management-center-service-hazelcast.192.168.99.100.nip.io/hazelcast-mancenter` (`/mancenter` for versions prior to `3.10`) in your browser.
 
 image::../assets/images/mancenter.png[Hazelcast Management Center]
 
@@ -181,7 +181,7 @@ image and deploy it into the
 cluster. JKube requires 3.3.x or higher maven version, therefore make sure that you have proper maven version installed on your machine.
 
 ==== 1) Build Maven dependencies
-In the main project directory run the following command to install the snapshot JAR files from the root directory:
+In the main project directory run the following command to install the snapshot JAR files from the `ocp-demo-frontend` directory:
 
 [source, shell]
 ----
@@ -193,7 +193,7 @@ mvn clean install
 Run the following command to build the container image in the cluster using S2I build strategy:
 [source, shell]
 ----
-mvn -f client-apps/ocp-demo-frontend/pom.xml oc:build
+mvn -f ocp-demo-frontend/pom.xml oc:build
 ----
 
 ==== 3) Check container image exists in the local OpenShift registry
@@ -209,7 +209,7 @@ ocp-demo-frontend   image-registry.openshift-image-registry.svc:5000/sbishyr-haz
 To start the application, use the following command:
 [source, shell]
 ----
-mvn -f client-apps/ocp-demo-frontend/pom.xml oc:resource oc:apply
+mvn -f ocp-demo-frontend/pom.xml oc:resource oc:apply
 ----
 
 You can check that the application is running correctly:
@@ -259,49 +259,6 @@ You can check that the application really works together with the Hazelcast clus
 
 image::../assets/images/mancenter_ops.png[Management Center Application]
 
-==== 6) Enable Entry Processor
-
-If you want to play with "Entry Processor" from the code sample, you need to place the Entry Processor JAR into the `/data` directory of Hazelcast. Currently, you use ConfigMap with `hazelcast.xml` as the volume mounted to `/data`. However, if we want to copy the custom JAR, you need to change it and use OpenShift Persistent Volume.
-
-Let's first change the directory to Hazelcast Enterprise (`cd hazelcast-cluster/hazelcast-enterprise`), Hazelcast Enterprise RHEL (`cd hazelcast-cluster/hazelcast-enterprise-rhel`) or Hazelcast (`cd hazelcast-cluster/hazelcast`).
-
-Then, replace ConfigMap with the Persistent Storage:
-
-[source, shell]
-----
-oc set volume statefulset.apps/hazelcast --add --overwrite --claim-size 1Gi --mount-path /data/hazelcast
-----
-[source, shell]
-----
-mkdir hazelcast-configuration/ && cp ../../client-apps/ocp-entry-processor/target/ocp-entry-processor-0.1-SNAPSHOT.jar
-hazelcast-configuration/
-----
-Then, after restarting all PODs (delete them, they will automatically start again), new volume will be available to the pods.
-
-[source, shell]
-----
-oc delete po --all
-----
-
-Now, copy `hazelcast.xml` and `ocp-entry-processor-0.1-SNAPSHOT.jar` into the volume.
-
-[source, shell]
-----
-oc rsync hazelcast-configuration/ hazelcast-0:/data/hazelcast/
-----
-
-Then, after restarting all PODs (delete them, they will automatically start again), you can play with "Entry Processor".
-[source, shell]
-----
-oc delete po --all
-----
-
-image::../assets/images/entry_processor.png[Entry Processor]
-
-The results should be visible in Management Center.
-
-image::../assets/images/entry_processor_mancenter.png[Management Center]
-
 === Step 5: Clean up Hazelcast Deployment
 ==== Delete Hazelcast cluster
 
@@ -330,7 +287,6 @@ oc create secret docker-registry rhcc \
    --docker-email=<red_hat_email>
 oc secrets link default rhcc --for=pull
 ----
-
 
 == External Hazelcast Client
 

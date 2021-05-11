@@ -10,7 +10,7 @@
         <artifactId>client-apps</artifactId>
         <groupId>com.hazelcast.samples.openshift.client-apps</groupId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../client-apps/pom.xml</relativePath>
     </parent>
 
     <properties>
