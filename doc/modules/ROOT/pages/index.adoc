@@ -56,7 +56,7 @@ the solution is to use VirutalBox instead of Hyper-V or play with the https://do
 
 Log in as Username: "developer", Password: "developer".
 
-image::../assets/images/open_shift_web_console.png[OpenShift Web Console]
+image::open_shift_web_console.png[OpenShift Web Console]
 
 === Step 2: Start Hazelcast cluster
 
@@ -69,7 +69,7 @@ use https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-in
 ==== 1) Create Project
 Log into OpenShift Platform. The login command is available when you click in the Web Console: "Copy Login Command".
 
-image::../assets/images/copy_login.png[OpenShift Web Console]
+image::copy_login.png[OpenShift Web Console]
 
 [source, shell]
 ----
@@ -154,7 +154,7 @@ Members {size:3, ver:3} [
 ====
 You can also perform all the operations and observe the results in the OpenShift Web Console.
 ====
-image::../assets/images/hazelcast_pods.png[OpenShift Web Console]
+image::hazelcast_pods.png[OpenShift Web Console]
 
 === Step 3: Access Management Center
 Management Center application (Hazelcast Enterprise only) is already started together with Hazelcast members when using `hazelcast.yaml`. Nevertheless, in order to make it usable, you need to expose its service.
@@ -172,7 +172,7 @@ management-center-service   management-center-service-hazelcast.192.168.99.100.n
 
 Then, you can access Management Center by opening `http://management-center-service-hazelcast.192.168.99.100.nip.io/hazelcast-mancenter` (`/mancenter` for versions prior to `3.10`) in your browser.
 
-image::../assets/images/mancenter.png[Hazelcast Management Center]
+image::mancenter.png[Hazelcast Management Center]
 
 === Step 4: Run a sample Hazelcast client application
 If you're interested not only in setting up the Hazelcast cluster, but also in using it in the client application, you can follow the following guidelines.
@@ -253,11 +253,11 @@ route.route.openshift.io/ocp-demo-frontend   ocp-demo-frontend-sbishyr-hazelcast
 
 Now, if you open in the browser ocp-demo-frontend-sbishyr-hazelcast.apps.demo.ocp4.hazelcast.com, you should see the following home screen.
 
-image::../assets/images/client_frontend.png[Frontend Application]
+image::client_frontend.png[Frontend Application]
 
 You can check that the application really works together with the Hazelcast cluster by doing some operation in the application, for example, entering "12" in the "Data Operations->Count" and clicking "Auto Pilot". Then, in the Management Center application, you should see that the entries are added.
 
-image::../assets/images/mancenter_ops.png[Management Center Application]
+image::mancenter_ops.png[Management Center Application]
 
 === Step 5: Clean up Hazelcast Deployment
 ==== Delete Hazelcast cluster
