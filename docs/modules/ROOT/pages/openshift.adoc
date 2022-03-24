@@ -1,19 +1,19 @@
-:github-address: https://github.com/hazelcast-guides/openshift
-:templates-url: templates:ROOT:page$/
-:hazelcast: Hazelcast IMDG
-:framework: Kubernetes
-
 = Hazelcast for OpenShift
+:templates-url: templates:ROOT:page$/
+:page-layout: tutorial
+:page-product: imdg
+:page-categories: Deployment, OpenShift, Kubernetes
+:page-lang: java
+:page-est-time: 20 mins
+:framework: Kubernetes
+:description: This tutorial is a complete example of how to use Hazelcast as a caching layer for applications deployed on OpenShift. In this tutorial, you'll set up a local OpenShift environment, start a Hazelcast cluster, configure Management Center, and finally run a sample client application.
 
-Hazelcast can be used as a Caching Layer for applications deployed on https://www.openshift.com/[OpenShift].
 
-This sample is a complete guideline on how to set up the local OpenShift environment, start Hazelcast cluster, configure Management Center, and finally run a sample client application.
+== What You'll Learn
 
-include::{templates-url}/link-to-repo.adoc[]
+{description}
 
-== Step-by-step instruction
-
-=== Step 1: Install OpenShift environment
+== Step 1. Install OpenShift Environment
 There are multiple options to run the OpenShift environment:
 
 - https://www.okd.io/minishift/[Minishift]: local OpenShift deployed on Virtual Machine
@@ -58,7 +58,7 @@ Log in as Username: "developer", Password: "developer".
 
 image::open_shift_web_console.png[OpenShift Web Console]
 
-=== Step 2: Start Hazelcast cluster
+== Step 2. Start Hazelcast Cluster
 
 [NOTE]
 ====
@@ -66,7 +66,8 @@ In case of Hazelcast Enterprise, you will need a valid Hazelcast license key. If
 use https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/openshift/hazelcast-cluster/hazelcast[Hazelcast OpenShift Origin] instead or get a trial key from https://hazelcast.com/get-started/#hazelcast-imdg[this link].
 ====
 
-==== 1) Create Project
+=== Create Project
+
 Log into OpenShift Platform. The login command is available when you click in the Web Console: "Copy Login Command".
 
 image::copy_login.png[OpenShift Web Console]
@@ -89,7 +90,8 @@ In case of https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazel
 <<Authenticate to Red Hat Container Catalog, here>>.
 ====
 
-==== 2) Start Hazelcast cluster
+=== Start Hazelcast Cluster
+
 Change the directory to Hazelcast Enterprise (`cd hazelcast-cluster/hazelcast-enterprise`), Hazelcast Enterprise RHEL (`cd hazelcast-cluster/hazelcast-enterprise-rhel`) or Hazelcast (`cd hazelcast-cluster/hazelcast`).
 
 Then, start the cluster with the following command.
@@ -107,7 +109,7 @@ Used parameters:
 - `ENTERPRISE_LICENSE_KEY`: Hazelcast Enterprise License (not needed for https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/openshift/hazelcast-cluster/hazelcast[Hazelcast
 OpenShift Origin])
 
-==== 3) Check that Hazelcast is running
+=== Check that Hazelcast is Running
 To check all created OpenShift resources, use the following command. You might need to wait some time until all pods are in Running status.
 
 [source, shell]
@@ -156,7 +158,7 @@ You can also perform all the operations and observe the results in the OpenShift
 ====
 image::hazelcast_pods.png[OpenShift Web Console]
 
-=== Step 3: Access Management Center
+== Step 3. Access Management Center
 Management Center application (Hazelcast Enterprise only) is already started together with Hazelcast members when using `hazelcast.yaml`. Nevertheless, in order to make it usable, you need to expose its service.
 [source, shell]
 ----
@@ -174,13 +176,14 @@ Then, you can access Management Center by opening `http://management-center-serv
 
 image::mancenter.png[Hazelcast Management Center]
 
-=== Step 4: Run a sample Hazelcast client application
+== Step 4. Run a Sample Hazelcast Client Application
 If you're interested not only in setting up the Hazelcast cluster, but also in using it in the client application, you can follow the following guidelines.
 Note that OpenShift Guide uses the https://www.eclipse.org/jkube/[Eclipse JKube] OpenShift Maven Plugin to build the container
 image and deploy it into the
 cluster. JKube requires 3.3.x or higher maven version, therefore make sure that you have proper maven version installed on your machine.
 
-==== 1) Build Maven dependencies
+=== Build Maven Dependencies
+
 In the main project directory run the following command to install the snapshot JAR files from the `ocp-demo-frontend` directory:
 
 [source, shell]
@@ -188,7 +191,7 @@ In the main project directory run the following command to install the snapshot 
 mvn clean install
 ----
 
-==== 2) Build "ocp-demo-frontend" Container image
+=== Build "ocp-demo-frontend" Container Image
 
 Run the following command to build the container image in the cluster using S2I build strategy:
 [source, shell]
@@ -196,7 +199,8 @@ Run the following command to build the container image in the cluster using S2I 
 mvn oc:build
 ----
 
-==== 3) Check container image exists in the local OpenShift registry
+=== Check the Local OpenShift Registry
+
 Check if your image is already in the OpenShift registry:
 [source, shell]
 ----
@@ -205,7 +209,8 @@ NAME                IMAGE REPOSITORY                                            
 ocp-demo-frontend   image-registry.openshift-image-registry.svc:5000/sbishyr-hazelcast/ocp-demo-frontend   latest   About a minute ago
 ----
 
-==== 4) Deploy the "ocp-demo-frontend" application
+=== Deploy the "ocp-demo-frontend" Application
+
 To start the application, use the following command:
 [source, shell]
 ----
@@ -241,7 +246,7 @@ NAME                                         HOST/PORT                          
 route.route.openshift.io/ocp-demo-frontend   ocp-demo-frontend-sbishyr-hazelcast.apps.demo.ocp4.hazelcast.com          ocp-demo-frontend   8080                 None
 ----
 
-==== 4) Check the application
+=== Check the Application
 JKube should have created a route for your application. You can check the route using the following command:
 
 [source, shell]
@@ -259,8 +264,9 @@ You can check that the application really works together with the Hazelcast clus
 
 image::mancenter_ops.png[Management Center Application]
 
-=== Step 5: Clean up Hazelcast Deployment
-==== Delete Hazelcast cluster
+== Step 5. Clean Up Hazelcast Deployment
+
+=== Delete Hazelcast cluster
 
 If you want to delete all resources (Replication Controller, Service, PODs, Storage, Config Map), you could use the following commands:
 
@@ -272,6 +278,7 @@ oc delete configmap --all
 ----
 
 == Authenticate to Red Hat Container Catalog
+
 [NOTE]
 ====
 Executing the following commands requires oc in version `3.9` or higher!
@@ -350,6 +357,7 @@ public class Client {
 ----
 
 == WAN Replication
+
 You need to expose your Hazelcast cluster with the `LoadBalancer` (or `NodePort`) service as described in the section <<External Hazelcast Client>>.
 
 Then, use the External IP in `target-endpoints` in the WAN Configuration. For example:
@@ -362,6 +370,7 @@ Then, use the External IP in `target-endpoints` in the WAN Configuration. For ex
     </batch-publisher>
 </wan-replication>
 ----
+
 == Debugging
 
 Debugging containerized applications in the OpenShift cluster can be difficult. In order to attach to the running POD, you can use the following command:
@@ -372,5 +381,6 @@ oc exec -ti <pod_name> -- bash
 ----
 
 == See Also
-- xref:kubernetes:ROOT:index.adoc[Hazelcast for Kubernetes]
-- xref:kubernetes-external-client:ROOT:index.adoc[External Hazelcast Client on Kubernetes]
+
+- xref:kubernetes.adoc[]
+- xref:kubernetes-external-client.adoc[]
